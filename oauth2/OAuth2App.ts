@@ -17,26 +17,22 @@ export class OAuth2App extends App {
         super(info, logger, accessors);
     }
 
-    protected async extendConfiguration(
-        configuration: IConfigurationExtend,
-        environmentRead: IEnvironmentRead
-    ): Promise<void> {
-        await Promise.all(
-            settings.map((setting) => {
-                configuration.settings.provideSetting(setting);
-            })
-        );
-
-        const notionCommand: NotionCommand = new NotionCommand(this);
-        await configuration.slashCommands.provideSlashCommand(notionCommand);
-    }
-
     public async initialize(
         configurationExtend: IConfigurationExtend,
         environmentRead: IEnvironmentRead
     ): Promise<void> {
         // register the OAuth2
         this.oAuth2Client = new OAuth2Client(this);
+        // recommended function to add settings and slash
+        await Promise.all(
+            settings.map((setting) => {
+                configurationExtend.settings.provideSetting(setting);
+            })
+        );
+        const notionCommand: NotionCommand = new NotionCommand(this);
+        await configurationExtend.slashCommands.provideSlashCommand(
+            notionCommand
+        );
     }
 
     public getOAuth2Instance(): OAuth2Client {
