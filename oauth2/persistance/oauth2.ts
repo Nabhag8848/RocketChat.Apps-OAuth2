@@ -15,7 +15,7 @@ export class OAuth2Storage {
     ) {}
 
     public async connectUserToClient(clientId: string, user: IUser) {
-        await this.persistence.updateByAssociations(
+        const id = await this.persistence.updateByAssociations(
             [
                 new RocketChatAssociationRecord( // user association
                     RocketChatAssociationModel.USER,
@@ -29,9 +29,11 @@ export class OAuth2Storage {
             { uid: user.id },
             true
         );
+        // id of the updated/created record
+        return id;
     }
 
-    public async getUserIdByClient(clientId: string): Promise<string> {
+    public async getUserIdsByClient(clientId: string): Promise<string> {
         const [result] = await this.persistenceRead.readByAssociation(
             new RocketChatAssociationRecord(
                 RocketChatAssociationModel.MISC, // client association

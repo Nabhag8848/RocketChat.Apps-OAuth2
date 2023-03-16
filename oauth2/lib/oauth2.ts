@@ -1,10 +1,83 @@
+import {
+    IHttp,
+    IModify,
+    IPersistence,
+    IRead,
+} from "@rocket.chat/apps-engine/definition/accessors";
+import { MessageActionType } from "@rocket.chat/apps-engine/definition/messages";
+import { SlashCommandContext } from "@rocket.chat/apps-engine/definition/slashcommands";
+import { IUser } from "@rocket.chat/apps-engine/definition/users";
+import { OAuth2Setting } from "../config/Settings";
 import { OAuth2App } from "../OAuth2App";
+import { OAuth2Storage } from "../persistance/oauth2";
 export class OAuth2Client {
     constructor(private readonly app: OAuth2App) {}
-    public async login() {
-        return;
+    public async login(
+        read: IRead,
+        http: IHttp,
+        modify: IModify,
+        persis: IPersistence,
+        context: SlashCommandContext
+    ): Promise<void> {
+        const { client_id, client_secret, redirect_uri } =
+            await this.getOAuth2Settings(read);
+
+        console.log(client_id, client_secret, redirect_uri)
+        const appBot = (await read.getUserReader().getAppUser()) as IUser;
+        const messageBuilder = modify
+            .getCreator()
+            .startMessage()
+            .setRoom(context.getRoom())
+            .setSender(appBot);
+
+        const response = `https://developer.rocket.chat`;
+        try {
+            messageBuilder.addAttachment({
+                text: "Login to your Notion Account",
+                actions: [
+                    {
+                        type: MessageActionType.BUTTON,
+                        text: "Login",
+                        msg_in_chat_window: false,
+                        url: `${response}`,
+                    },
+                ],
+            });
+
+            await modify.getCreator().finish(messageBuilder);
+        } catch (err) {
+            messageBuilder.setText(
+                "An error occurred when trying to send the login url:disappointed_relieved:"
+            );
+
+            modify
+                .getNotifier()
+                .notifyUser(context.getSender(), messageBuilder.getMessage());
+        }
     }
+
     public async logout() {
         return;
+    }
+
+    private async getOAuth2Settings(read: IRead) {
+        const client_id = (await read
+            .getEnvironmentReader()
+            .getSettings()
+            .getValueById(OAuth2Setting.CLIENT_ID)) as string;
+        const client_secret = (await read
+            .getEnvironmentReader()
+            .getSettings()
+            .getValueById(OAuth2Setting.CLIENT_SECRET)) as string;
+        const redirect_uri = (await read
+            .getEnvironmentReader()
+            .getSettings()
+            .getValueById(OAuth2Setting.REDIRECT_URI)) as string;
+
+        return {
+            client_id,
+            client_secret,
+            redirect_uri,
+        };
     }
 }
