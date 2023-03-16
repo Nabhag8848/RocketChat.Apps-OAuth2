@@ -1,0 +1,16 @@
+{
+    "id": "9ec4b2d8-ae1e-4c7b-88d1-3d10aa20c18d",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.37.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Nabhag Motivaras",
+        "homepage": "https://github.com/Nabhag8848/RocketChat.Apps-OAuth2",
+        "support": "https://github.com/Nabhag8848/RocketChat.Apps-OAuth2"
+    },
+    "name": "OAuth2",
+    "nameSlug": "oauth",
+    "classFile": "OAuth2App.ts",
+    "description": "Alternate Way to Authorize (OAuth2) in RocketChat Apps incase of different Workflow depending on the platform",
+    "implements": []
+}
