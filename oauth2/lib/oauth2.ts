@@ -8,6 +8,7 @@ import { MessageActionType } from "@rocket.chat/apps-engine/definition/messages"
 import { SlashCommandContext } from "@rocket.chat/apps-engine/definition/slashcommands";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
 import { OAuth2Setting } from "../config/Settings";
+import { OAuth2Locator } from "../enums/oauth2";
 import { OAuth2App } from "../OAuth2App";
 import { OAuth2Storage } from "../persistance/oauth2";
 export class OAuth2Client {
@@ -21,8 +22,10 @@ export class OAuth2Client {
     ): Promise<void> {
         const { client_id, client_secret, redirect_uri } =
             await this.getOAuth2Settings(read);
+        
+        const oAuthStorage = new OAuth2Storage(persis, read.getPersistenceReader());
+        const id = await oAuthStorage.connectUserToClient(client_id, context.getSender());
 
-        console.log(client_id, client_secret, redirect_uri)
         const appBot = (await read.getUserReader().getAppUser()) as IUser;
         const messageBuilder = modify
             .getCreator()
@@ -30,7 +33,9 @@ export class OAuth2Client {
             .setRoom(context.getRoom())
             .setSender(appBot);
 
-        const response = `https://developer.rocket.chat`;
+        const full_redirect_uri = redirect_uri + OAuth2Locator.redirectUrlPath;
+
+        const response = `${OAuth2Locator.authUri}client_id=${client_id}&redirect_uri=${full_redirect_uri}`;
         try {
             messageBuilder.addAttachment({
                 text: "Login to your Notion Account",
