@@ -4,10 +4,15 @@ import {
     IEnvironmentRead,
     ILogger,
 } from "@rocket.chat/apps-engine/definition/accessors";
+import {
+    ApiSecurity,
+    ApiVisibility,
+} from "@rocket.chat/apps-engine/definition/api";
 import { App } from "@rocket.chat/apps-engine/definition/App";
 import { IAppInfo } from "@rocket.chat/apps-engine/definition/metadata";
 import { NotionCommand } from "./commands/NotionCommand";
 import { settings } from "./config/Settings";
+import { WebHookEndpoint } from "./endpoints/webhook";
 import { OAuth2Client } from "./lib/oauth2";
 
 export class OAuth2App extends App {
@@ -33,6 +38,12 @@ export class OAuth2App extends App {
         await configurationExtend.slashCommands.provideSlashCommand(
             notionCommand
         );
+
+        await configurationExtend.api.provideApi({
+            visibility: ApiVisibility.PUBLIC,
+            security: ApiSecurity.UNSECURE,
+            endpoints: [new WebHookEndpoint(this)],
+        });
     }
 
     public getOAuth2Instance(): OAuth2Client {
