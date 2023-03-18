@@ -22,9 +22,15 @@ export class OAuth2Client {
     ): Promise<void> {
         const { client_id, client_secret, redirect_uri } =
             await this.getOAuth2Settings(read);
-        
-        const oAuthStorage = new OAuth2Storage(persis, read.getPersistenceReader());
-        const id = await oAuthStorage.connectUserToClient(client_id, context.getSender());
+
+        const oAuthStorage = new OAuth2Storage(
+            persis,
+            read.getPersistenceReader()
+        );
+        const id = await oAuthStorage.connectUserToClient(
+            client_id,
+            context.getSender()
+        );
 
         const appBot = (await read.getUserReader().getAppUser()) as IUser;
         const messageBuilder = modify
@@ -55,7 +61,7 @@ export class OAuth2Client {
                 "An error occurred when trying to send the login url:disappointed_relieved:"
             );
 
-            modify
+            await modify
                 .getNotifier()
                 .notifyUser(context.getSender(), messageBuilder.getMessage());
         }
@@ -63,6 +69,39 @@ export class OAuth2Client {
 
     public async logout() {
         return;
+    }
+
+    public async test(
+        read: IRead,
+        http: IHttp,
+        modify: IModify,
+        persis: IPersistence,
+        context: SlashCommandContext
+    ): Promise<void> {
+        const oAuthStorage = new OAuth2Storage(
+            persis,
+            read.getPersistenceReader()
+        );
+        
+        const tokenInfo = await oAuthStorage.getTokenInfoOfUser(
+            context.getSender().id
+        );
+        const appBot = (await read.getUserReader().getAppUser()) as IUser;
+        const messageBuilder = modify
+            .getCreator()
+            .startMessage()
+            .setRoom(context.getRoom())
+            .setSender(appBot);
+        
+        if (tokenInfo?.access_token) {
+            messageBuilder.setText("User is already loggedIn :rocket:");
+        } else {
+            messageBuilder.setText("Login to your workspace `/notion login`");
+        }
+
+        await modify
+            .getNotifier()
+            .notifyUser(context.getSender(), messageBuilder.getMessage());
     }
 
     private async getOAuth2Settings(read: IRead) {

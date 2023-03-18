@@ -37,6 +37,7 @@ export class NotionCommand implements ISlashCommand {
                 break;
             }
             case CmdParameters.TEST: {
+                oauth2Instance.test(read, http, modify, persis, context);
                 break;
             }
             default: {
