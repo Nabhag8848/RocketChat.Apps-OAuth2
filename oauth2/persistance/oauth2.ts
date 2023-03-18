@@ -7,6 +7,7 @@ import {
     RocketChatAssociationRecord,
 } from "@rocket.chat/apps-engine/definition/metadata";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
+import { ITokenInfo } from "../definations/oauth2";
 
 export class OAuth2Storage {
     constructor(
@@ -15,7 +16,7 @@ export class OAuth2Storage {
     ) {}
 
     public async connectUserToClient(clientId: string, user: IUser) {
-        await this.persistence.updateByAssociations(
+        const id = await this.persistence.updateByAssociations(
             [
                 new RocketChatAssociationRecord( // user association
                     RocketChatAssociationModel.USER,
@@ -29,6 +30,8 @@ export class OAuth2Storage {
             { uid: user.id },
             true
         );
+        // id of the updated/created record
+        return id;
     }
 
     public async getUserIdByClient(clientId: string): Promise<string> {
@@ -39,5 +42,44 @@ export class OAuth2Storage {
             )
         );
         return result ? (result as any).uid : undefined;
+    }
+
+    public async connectUserToTokenInfo(
+        tokenInfo: ITokenInfo,
+        userId: string
+    ): Promise<string> {
+        const id = await this.persistence.updateByAssociations(
+            [
+                new RocketChatAssociationRecord( // user association
+                    RocketChatAssociationModel.USER,
+                    userId
+                ),
+                new RocketChatAssociationRecord(
+                    RocketChatAssociationModel.MISC, // access_info association
+                    "access_token with info"
+                ),
+            ],
+            tokenInfo,
+            true
+        );
+        // id of the updated/created record
+        return id;
+    }
+
+    public async getTokenInfoOfUser(
+        userId: string
+    ): Promise<ITokenInfo | undefined> {
+        const [tokenInfo] = (await this.persistenceRead.readByAssociations([
+            new RocketChatAssociationRecord( // user association
+                RocketChatAssociationModel.USER,
+                userId
+            ),
+            new RocketChatAssociationRecord(
+                RocketChatAssociationModel.MISC, // access_info association
+                "access_token with info"
+            ),
+        ])) as ITokenInfo[];
+
+        return tokenInfo;
     }
 }

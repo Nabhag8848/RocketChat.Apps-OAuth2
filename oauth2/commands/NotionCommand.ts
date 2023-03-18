@@ -27,9 +27,10 @@ export class NotionCommand implements ISlashCommand {
         persis: IPersistence
     ): Promise<void> {
         const param = context.getArguments()[0];
-
+        const oauth2Instance = this.app.getOAuth2Instance();
         switch (param) {
             case CmdParameters.LOGIN: {
+                oauth2Instance.login(read, http, modify, persis, context);
                 break;
             }
             case CmdParameters.LOGOUT: {
