@@ -65,4 +65,21 @@ export class OAuth2Storage {
         // id of the updated/created record
         return id;
     }
+
+    public async getTokenInfoOfUser(
+        userId: string
+    ): Promise<ITokenInfo | undefined> {
+        const [tokenInfo] = (await this.persistenceRead.readByAssociations([
+            new RocketChatAssociationRecord( // user association
+                RocketChatAssociationModel.USER,
+                userId
+            ),
+            new RocketChatAssociationRecord(
+                RocketChatAssociationModel.MISC, // access_info association
+                "access_token with info"
+            ),
+        ])) as ITokenInfo[];
+
+        return tokenInfo;
+    }
 }
