@@ -1,0 +1,11 @@
+{
+    "NotionCommandDescription": "OAuth2 with Notion",
+    "NotionCommandParams": "login logout help",
+    "ClientIdLabel": "notion-client-id",
+    "ClientIdPlaceholder": "paste your clientid",
+    "ClientSecretLabel": "notion-client-secret",
+    "ClientSecretPlaceholder": "paste your secret",
+    "RedirectUriLabel": "redirect-uri",
+    "RedirectUriPlaceholder": "paste your redirect-uri",
+    "CredentialsSettings": "**Authorization Settings**"
+}
