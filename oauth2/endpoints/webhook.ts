@@ -14,6 +14,7 @@ import {
 import { OAuth2Setting } from "../config/Settings";
 import { OAuth2Content, OAuth2Locator } from "../enums/oauth2";
 import { OAuth2Storage } from "../persistance/oauth2";
+import { sendDirectNotification } from "../lib/sendDirectNotification";
 
 export class WebHookEndpoint extends ApiEndpoint {
     public path: string = "webhook";
@@ -78,6 +79,13 @@ export class WebHookEndpoint extends ApiEndpoint {
             user_id
         );
 
+        const user = await read.getUserReader().getById(user_id);
+        await sendDirectNotification(
+            user,
+            read,
+            modify,
+            "Login Successful :rocket:"
+        );
         return this.success(OAuth2Content.success);
     }
 }
