@@ -82,4 +82,21 @@ export class OAuth2Storage {
 
         return tokenInfo;
     }
+
+    public async removeTokenInfoOfUser(userId: string) {
+        const [removedTokenInfo] = (await this.persistence.removeByAssociations(
+            [
+                new RocketChatAssociationRecord( // user association
+                    RocketChatAssociationModel.USER,
+                    userId
+                ),
+                new RocketChatAssociationRecord(
+                    RocketChatAssociationModel.MISC, // access_info association
+                    "access_token with info"
+                ),
+            ]
+        )) as ITokenInfo[];
+
+        return removedTokenInfo;
+    }
 }

@@ -67,8 +67,41 @@ export class OAuth2Client {
         }
     }
 
-    public async logout() {
-        return;
+    public async logout(
+        read: IRead,
+        http: IHttp,
+        modify: IModify,
+        persis: IPersistence,
+        context: SlashCommandContext
+    ) {
+        const oAuthStorage = new OAuth2Storage(
+            persis,
+            read.getPersistenceReader()
+        );
+
+        const tokenInfo = await oAuthStorage.getTokenInfoOfUser(
+            context.getSender().id
+        );
+
+        const appBot = (await read.getUserReader().getAppUser()) as IUser;
+        const messageBuilder = modify
+            .getCreator()
+            .startMessage()
+            .setRoom(context.getRoom())
+            .setSender(appBot);
+
+        if (tokenInfo?.access_token) {
+            const tokenInfo = await oAuthStorage.removeTokenInfoOfUser(context.getSender().id);
+            messageBuilder.setText("✅ Logout Successful");
+        } else {
+            messageBuilder.setText(
+                `You are already logout! Login to your workspace \`/notion login\``
+            );
+        }
+
+        await modify
+            .getNotifier()
+            .notifyUser(context.getSender(), messageBuilder.getMessage());
     }
 
     public async test(
@@ -82,7 +115,7 @@ export class OAuth2Client {
             persis,
             read.getPersistenceReader()
         );
-        
+
         const tokenInfo = await oAuthStorage.getTokenInfoOfUser(
             context.getSender().id
         );
@@ -92,7 +125,7 @@ export class OAuth2Client {
             .startMessage()
             .setRoom(context.getRoom())
             .setSender(appBot);
-        
+
         if (tokenInfo?.access_token) {
             messageBuilder.setText("User is already loggedIn :rocket:");
         } else {
