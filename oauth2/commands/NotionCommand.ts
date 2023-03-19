@@ -15,8 +15,8 @@ export class NotionCommand implements ISlashCommand {
     constructor(private readonly app: OAuth2App) {}
 
     public command: string = "notion";
-    public i18nParamsExample: string = "";
-    public i18nDescription: string = "Notion Authorization";
+    public i18nParamsExample: string = "NotionCommandParams";
+    public i18nDescription: string = "NotionCommandDescription";
     public providesPreview: boolean = false;
 
     public async executor(
