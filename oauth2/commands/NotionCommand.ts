@@ -34,6 +34,7 @@ export class NotionCommand implements ISlashCommand {
                 break;
             }
             case CmdParameters.LOGOUT: {
+                oauth2Instance.logout(read, http, modify, persis, context);
                 break;
             }
             case CmdParameters.TEST: {
