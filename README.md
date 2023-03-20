@@ -101,7 +101,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## ✅ About The Project:
-- Issues mentions below aren't possible with current apps-engine framework version (1.37.0 when writing this).
+- Following things aren't possible with current apps-engine framework version (1.37.0 when writing this).
 ### Why we need backward compatible approach?
 
 Here's why:
