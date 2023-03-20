@@ -9,6 +9,7 @@ import {
     SlashCommandContext,
 } from "@rocket.chat/apps-engine/definition/slashcommands";
 import { CmdParameters } from "../enums/cmdparams";
+import { helperMessage } from "../lib/helperMessage";
 import { OAuth2App } from "../OAuth2App";
 
 export class NotionCommand implements ISlashCommand {
@@ -41,7 +42,12 @@ export class NotionCommand implements ISlashCommand {
                 oauth2Instance.test(read, http, modify, persis, context);
                 break;
             }
+            case CmdParameters.HELP: {
+                await helperMessage(read, http, modify, persis, context);
+                break;
+            }
             default: {
+                await helperMessage(read, http, modify, persis, context);
             }
         }
     }
