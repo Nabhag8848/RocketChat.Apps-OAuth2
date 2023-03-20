@@ -54,17 +54,15 @@ export class OAuth2Client {
                     },
                 ],
             });
-
-            await modify.getCreator().finish(messageBuilder);
         } catch (err) {
             messageBuilder.setText(
                 "An error occurred when trying to send the login url:disappointed_relieved:"
             );
-
-            await modify
-                .getNotifier()
-                .notifyUser(context.getSender(), messageBuilder.getMessage());
         }
+
+        await modify
+            .getNotifier()
+            .notifyUser(context.getSender(), messageBuilder.getMessage());
     }
 
     public async logout(
@@ -91,7 +89,9 @@ export class OAuth2Client {
             .setSender(appBot);
 
         if (tokenInfo?.access_token) {
-            const tokenInfo = await oAuthStorage.removeTokenInfoOfUser(context.getSender().id);
+            const tokenInfo = await oAuthStorage.removeTokenInfoOfUser(
+                context.getSender().id
+            );
             messageBuilder.setText("✅ Logout Successful");
         } else {
             messageBuilder.setText(
