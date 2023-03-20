@@ -120,6 +120,11 @@ Here's why:
      • To get help of Usage use /notion help.
 
 ```
+
+## ✨ Glimpse :
+[oAuth](https://user-images.githubusercontent.com/65061890/226479699-5d975e54-ec27-400e-a853-22e5fc1470b4.webm)
+
+
 <!-- CONTRIBUTING -->
 ## 🧑‍💻 Contributing
 
