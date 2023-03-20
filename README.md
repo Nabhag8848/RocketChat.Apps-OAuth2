@@ -1,4 +1,4 @@
-# RocketChat.Apps-OAuth2
+#  🚀💬 RocketChat.Apps-OAuth2 
 
 
 <!-- PROJECT LOGO -->
@@ -39,7 +39,7 @@ Backward Compatible Approach to Authorize (OAuth2) in RocketChat.Apps incase of 
 ```
 
 
-## Getting Started
+##  📜 Getting Started
 
 ### Prerequisites
 
@@ -53,7 +53,7 @@ Backward Compatible Approach to Authorize (OAuth2) in RocketChat.Apps incase of 
 
 
 
-### Installation
+### ⚙️ Installation
 - Every RocketChat Apps runs on RocketChat Server, thus everytime you wanna test you need to deploy the app with this note. lets start setting up:
 
 1. Clone the repo
@@ -89,7 +89,7 @@ Backward Compatible Approach to Authorize (OAuth2) in RocketChat.Apps incase of 
   
 
 <!-- ABOUT THE PROJECT -->
-## About The Project:
+## ✅ About The Project:
 - Issues mentions below aren't possible with current apps-engine framework version (1.37.0 when writing this).
 ### Why we need backward compatible approach?
 
@@ -98,9 +98,19 @@ Here's why:
 * Now incase of usual workflow we provide the clientId and clientSecret in params but Notion and in future we may encounter any other platform  which would suggest different ways to provide credentials in Authorization header. In case of Notion they suggested to provide the credentials in form of `Basic CLIENTID:CLIENTSECRET` where the credentials provide should be a base64. 
 * In case of any platform we may need the extra info in persistance storage. In case of Notion we needed a lot of extra fields which includes workspace info, access_level of pages, userInfo including the access_token_info etc. [check here](https://developers.notion.com/docs/authorization#step-4-notion-responds-with-an-access_token-and-some-additional-information)
 
+## :rocket: Usage :
 
+```
+
+    Use /notion to Authorize through 🚀💬 following arguments available: 
+     • To login your Notion account /notion login.
+     • To logout your Notion account /notion logout.
+     • To check your status of Authorization with Notion /notion test.
+     • To get help of Usage use /notion help.
+
+```
 <!-- CONTRIBUTING -->
-## Contributing
+## 🧑‍💻 Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -113,7 +123,7 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## Resources
+## 📚 Resources
 Here are some links to examples and documentation:
 - [Rocket.Chat Apps TypeScript Definitions Documentation](https://rocketchat.github.io/Rocket.Chat.Apps-engine/)
 - [Rocket.Chat Apps TypeScript Definitions Repository](https://github.com/RocketChat/Rocket.Chat.Apps-engine)
