@@ -35,8 +35,13 @@
 </div>
 
 ```
-Backward Compatible Approach to Authorize (OAuth2) in RocketChat.Apps incase of different workflow depending upon the platform
+
+    Backward Compatible Approach to Authorize (OAuth2) in RocketChat.Apps incase of different workflow depending upon the platform using 
+    Notion Authorization as example to document this. There are limitations of current version of apps-engine and will improve it in future.
+    Check About-Project Section to know the Limiation.
+
 ```
+
 
 
 ##  📜 Getting Started
@@ -80,10 +85,13 @@ Backward Compatible Approach to Authorize (OAuth2) in RocketChat.Apps incase of 
 
 4. Once its deploy, Go to Installed Apps and Settings tab in RC,you would see three input fields:
    ```
-    notion-client-id
-    notion-client-secret
+   
+    # notion-client-id
+    # notion-client-secret
     // Generate above Credentials from Notion By Creating the *Public* Integration. Attached link above for the same.
-    redirecturi: if you are running server on local then input: http://localhost:3000 else provide your server url without path.
+
+    # redirecturi: if you are running server on local then input: http://localhost:3000 else provide your server url without path.
+    
    ```
 5. Once Its done save the changes, and now under the Notion Integration Provide the Webhook GET endpoint in Redirect URI field of Notion, GET Webhook Endpoint: you can find on the Current App Info under Detail tab in RC.
   
