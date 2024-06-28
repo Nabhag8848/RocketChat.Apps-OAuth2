@@ -1,5 +1,6 @@
 #  🚀💬 RocketChat.Apps-OAuth2 
 
+Note: This Implementation has some bugs, Refer Apps.Notion Repository Instead.
 
 <!-- PROJECT LOGO -->
 <br />
